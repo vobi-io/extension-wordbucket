@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WordBucket Options</title>
+    <link rel="stylesheet" href="../assets/css/options.css">
+</head>
+<body>
+
+	<div id="content">
+       	<h1>
+        	<img src="../assets/images/logo.png" title="Vobi.io" alt="Vobi.io"><br>
+        	<div id="options-title-heading">Chrome Extension Options</div>
+      	</h1>
+
+      	<div class="option_row">
+        	<div class="option_name">My primary language:</div>
+    		<div class="option_picker">
+ 				<select id="targetLangSel" class="jfk-button jfk-button-standard"><option value="ge">Georgian</option><option value="en">English</option></select>
+        	</div>
+     	</div>
+
+      	<div class="option_row">
+        	<div id="popup-option" class="option_name">Enable Inline:</div>
+	        <div id="popup-option-content" class="option_picker">
+	          	<input type="checkbox" name="inline" id="inline">
+	          	<label for="inline">Show inline save button on selection</label>
+		    </div>
+     	 </div>
+
+      	<div class="buttons">
+			<div id="saveBtn" class="jfk-button-action jfk-button" role="button" tabindex="0" style="user-select: none;">Save</div>
+			<div id="resetBtn" class="jfk-button-standard jfk-button" role="button" tabindex="0" style="user-select: none;">Reset</div>
+			<span id="saveStatus" style="display:none">Options saved.</span>
+      	</div>
+
+    </div>
+
+    <div class="footer"><a id="footer-homepage" href="http://translate.google.com/"></a></div>
+    <div class="footer">&copy; 2017 Vobi - <a id="footer-privacy" href="#">Github</a></div>
+
+	<script src="options.js"></script>
+</body>
+</html>
