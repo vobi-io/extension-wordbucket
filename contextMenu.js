@@ -1,10 +1,10 @@
 function handleSelection(info, tab) {
-    saveTextToAPI(info.selectionText)
+	saveTextToAPI(info.selectionText)
 }
 
 chrome.contextMenus.create({
   // title: "Save: %s", 
-  title: "Save to WordBucket", 
+  title: "Open with WordBucket", 
   contexts:["selection"], 
-  onclick: handleSelection,
+  onclick: handleSelection
 });
