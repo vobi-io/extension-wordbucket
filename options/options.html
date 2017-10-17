@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="../assets/css/options.css">
 </head>
 <body>
-
 	<div id="content">
        	<h1>
         	<img src="../assets/images/logo.png" title="Vobi.io" alt="Vobi.io"><br>
@@ -13,11 +12,21 @@
       	</h1>
 
       	<div class="option_row">
-        	<div class="option_name">My primary language:</div>
+        	<div class="option_name">Facebook Account:</div>
     		<div class="option_picker">
- 				<select id="targetLangSel" class="jfk-button jfk-button-standard"><option value="ge">Georgian</option><option value="en">English</option></select>
+ 				<button onclick="fbLogin()">Login with Facebook</button>
         	</div>
      	</div>
+
+        <div class="option_row">
+            <div class="option_name">My primary language:</div>
+            <div class="option_picker">
+                <select id="targetLangSel" class="jfk-button jfk-button-standard">
+                    <option value="ge">Georgian</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </div>
 
       	<div class="option_row">
         	<div id="popup-option" class="option_name">Enable Inline:</div>

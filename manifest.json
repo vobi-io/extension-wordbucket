@@ -17,7 +17,15 @@
   "background": { 
     "scripts": ["api.js", "contextMenu.js"]
   },
-  "options_page": "options/options.html",
+  "options_ui": {
+    // Required.
+    "page": "options/options.html",
+    // Recommended.
+    "chrome_style": true,
+    // Not recommended; only provided for backwards compatibility,
+    // and will be unsupported in a future version of Chrome (TBD).
+    "open_in_tab": true
+  },
   "browser_action": {
     "default_title": "This is a test",
     "default_popup": "popup.html"

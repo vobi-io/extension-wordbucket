@@ -43,6 +43,10 @@
 	width: 100%;
 	display: inline-flex;
 	flex-direction: column;
+	overflow: scroll;
+	max-height: 300px;
+	border-bottom: 1px solid #f5f5f5;
+	padding-bottom: 5px;
 }
 
 .wordbucket-save-button{
@@ -71,4 +75,24 @@
     background-image: linear-gradient(top,#4d90fe,#4787ed);
     border: 1px solid #3079ed;
 	color: #fff!important;
+}
+
+.wordbucket-options-button {
+	float: right;
+	background-color: 
+	-webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    background-color: #f5f5f5;
+    background-image: -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: -moz-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: -ms-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: -o-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: linear-gradient(top,#f5f5f5,#f1f1f1);
+    color: #444!important;
+    border: 1px solid #dcdcdc;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+.wordbucket-target {
+	color: #4b8af5!important;
 }

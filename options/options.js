@@ -44,6 +44,7 @@ function restore_options() {
         document.getElementById('inline').checked = items.inlineEnbaled;
     });
 }
+
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('saveBtn').addEventListener('click', save_options);
 document.getElementById('resetBtn').addEventListener('click', reset_options);

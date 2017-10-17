@@ -53,7 +53,7 @@
 	
 	function removeButton(event) {
 		if (event.target.className.indexOf('wordbucket-button') > -1 && wordbucketText) {
-			console.log("Saved::" + wordbucketText)
+			// console.log("Saved::" + wordbucketText)
 			clearPopup()
 			translateText(event)
 		}
@@ -97,6 +97,7 @@
     	contentDiv.className = 'wordbucket-content'
 
 		var textRow = document.createElement('span')
+    	textRow.className = 'wordbucket-target'
 		textRow.innerText = text
 		contentDiv.appendChild(textRow);
 
@@ -126,9 +127,9 @@
 		saveBtn.onclick = function() {
 			saveText(text, translation)
 		}
-		contentDiv.appendChild(saveBtn);
 
 		wrapperDiv.appendChild(contentDiv);
+		wrapperDiv.appendChild(saveBtn);
 		document.body.appendChild(wrapperDiv);
 	}
 
