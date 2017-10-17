@@ -104,9 +104,21 @@
     	hr.className = 'wordbucket-hr'
 		contentDiv.appendChild(hr);
 
-		var textRow = document.createElement('span')
-		textRow.innerText = translation
-		contentDiv.appendChild(textRow);
+		translation.dictionary1.map(item => {
+			var textRow = document.createElement('span')
+			textRow.innerText = item.value
+			contentDiv.appendChild(textRow);
+		})
+
+		var hr = document.createElement('div')
+    	hr.className = 'wordbucket-hr'
+		contentDiv.appendChild(hr);
+
+		translation.dictionary2.map(item => {
+			var textRow = document.createElement('span')
+			textRow.innerText = `${item.key} - ${item.value}`
+			contentDiv.appendChild(textRow);
+		})
 
 		var saveBtn = document.createElement('button')
     	saveBtn.className = 'wordbucket-save-button'
