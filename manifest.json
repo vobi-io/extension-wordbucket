@@ -5,7 +5,8 @@
   "version": "1.0",
   "permissions": [
     "contextMenus",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "content_scripts": [
     {
@@ -18,13 +19,14 @@
     "scripts": ["api.js", "contextMenu.js"]
   },
   "options_ui": {
-    // Required.
     "page": "options/options.html",
-    // Recommended.
-    "chrome_style": true,
-    // Not recommended; only provided for backwards compatibility,
-    // and will be unsupported in a future version of Chrome (TBD).
+    "chrome_style": false,
     "open_in_tab": true
+  },
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
   },
   "browser_action": {
     "default_title": "This is a test",

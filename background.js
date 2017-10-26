@@ -4,11 +4,14 @@
 	// the DOM will be available here
 	let wordbucketText;
 	let showInline = false;
+	let fbUsedId = null;
 
 	chrome.storage.sync.get({
-	    inlineEnbaled: true
+	    inlineEnbaled: true,
+	    fbUsedId: null,
 	  }, function(items) {
 	  	showInline =  items.inlineEnbaled
+	  	fbUsedId =  items.fbUsedId
 	});
 
 	function getSelectedText() {
@@ -84,7 +87,29 @@
 	function saveText(text, translation) {
 		clearPopup()
 		clearButton()
-		console.log("Save text:::", text, translation)
+		if(!fbUsedId) {
+			return alert('Please, login into your account.')
+		}
+		console.log("Save text:::", text, translation, fbUsedId)
+	}
+
+	function createListItem(key, value) {
+		var listItem = document.createElement('div')
+		
+		var saveBtn = document.createElement('button')
+		saveBtn.className = 'wordbucket-save-button'
+		saveBtn.innerText = "Save"
+		saveBtn.onclick = function() {
+			saveText(key, value)
+		}
+		listItem.className = 'wordbucket-list-item'
+		
+		var textRow = document.createElement('span')
+		textRow.innerHTML = `<span class="bold">${key}</span> - ${value}`
+		
+		listItem.appendChild(saveBtn);
+		listItem.appendChild(textRow);
+		return listItem
 	}
 
 	function createPopup(event, text, translation) {
@@ -94,42 +119,19 @@
 		wrapperDiv.style.left = `${event.pageX+5}px`
 			
 		var contentDiv = document.createElement('div')
-    	contentDiv.className = 'wordbucket-content'
-
-		var textRow = document.createElement('span')
-    	textRow.className = 'wordbucket-target'
-		textRow.innerText = text
-		contentDiv.appendChild(textRow);
-
-		var hr = document.createElement('div')
-    	hr.className = 'wordbucket-hr'
-		contentDiv.appendChild(hr);
+		contentDiv.className = 'wordbucket-content'
 
 		translation.dictionary1.map(item => {
-			var textRow = document.createElement('span')
-			textRow.innerText = item.value
-			contentDiv.appendChild(textRow);
+			contentDiv.appendChild(createListItem(item.key, item.value));
 		})
-
-		var hr = document.createElement('div')
-    	hr.className = 'wordbucket-hr'
-		contentDiv.appendChild(hr);
-
+		
 		translation.dictionary2.map(item => {
-			var textRow = document.createElement('span')
-			textRow.innerText = `${item.key} - ${item.value}`
-			contentDiv.appendChild(textRow);
+			contentDiv.appendChild(createListItem(item.key, item.value));
 		})
 
-		var saveBtn = document.createElement('button')
-    	saveBtn.className = 'wordbucket-save-button'
-		saveBtn.innerText = "Save"
-		saveBtn.onclick = function() {
-			saveText(text, translation)
-		}
+		
 
 		wrapperDiv.appendChild(contentDiv);
-		wrapperDiv.appendChild(saveBtn);
 		document.body.appendChild(wrapperDiv);
 	}
 

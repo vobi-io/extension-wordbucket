@@ -45,6 +45,76 @@ function restore_options() {
     });
 }
 
+// facebook logout
+function fbLogout() {
+    localStorage.clear();
+    chrome.storage.sync.remove(["fbUsedId","user"],function(){
+        const error = chrome.runtime.lastError;
+        if (error) {
+            console.error(error);
+        }
+
+        renderLoginLogout()
+    })
+}
+
+// Show/Hide user login
+function renderLoginLogout() {
+    // Check auth user
+    chrome.storage.sync.get({
+        "fbUsedId": null,
+        "user": null,
+    }, function(items){
+        let user = 'none'
+        let logout = 'block'
+        if (items.fbUsedId) {
+            user = 'block'
+            logout = 'none'
+            document.getElementById('username').innerText = items.user
+        }
+        document.getElementById('username').style.display = user
+        document.getElementById('fbLogout').style.display = user
+        document.getElementById('fbLogin').style.display = logout
+    });
+}
+
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('saveBtn').addEventListener('click', save_options);
 document.getElementById('resetBtn').addEventListener('click', reset_options);
+document.getElementById('fbLogout').addEventListener('click', fbLogout);
+
+
+(function() {
+    // your page initialization code here
+    // the DOM will be available here
+    var successURL = 'https://www.facebook.com/connect/login_success.html';
+    function onFacebookLogin() {
+        if (!localStorage.accessToken) {
+            chrome.tabs.getAllInWindow(null, function(tabs) {
+                for (var i = 0; i < tabs.length; i++) {
+                    if (tabs[i].url.indexOf(successURL) == 0) {
+                        var params = tabs[i].url.split('#')[1];
+                        access = params.split('&')[0].split('=')[1]
+                        localStorage.accessToken = access;
+                        chrome.tabs.onUpdated.removeListener(onFacebookLogin);
+                        getFBUserId(access, response => {
+                            chrome.storage.sync.set({
+                                "fbUsedId": response.id,
+                                "user": response.name,
+                            }, function(){
+                                renderLoginLogout()
+                            });
+                        })
+                        return;
+                    }
+                }
+            });
+        }
+    }
+    // Set listener
+    chrome.tabs.onUpdated.addListener(onFacebookLogin);
+
+    // Check login/logout buttons
+    renderLoginLogout()
+    
+ })();

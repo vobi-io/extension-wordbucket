@@ -14,7 +14,9 @@
       	<div class="option_row">
         	<div class="option_name">Facebook Account:</div>
     		<div class="option_picker">
- 				<button onclick="fbLogin()">Login with Facebook</button>
+                 <a target="_blank" id="fbLogin" style="display: none" href="https://www.facebook.com/dialog/oauth?client_id=1764871037166841&response_type=token&scope=email&redirect_uri=http://www.facebook.com/connect/login_success.html">Facebook Connect</a>
+                 <span id="username" style="display: none"></span>
+                 <button id="fbLogout" style="display: none">Logout</button>
         	</div>
      	</div>
 
@@ -25,6 +27,21 @@
                     <option value="ge">Georgian</option>
                     <option value="en">English</option>
                 </select>
+            </div>
+        </div>
+
+        <div class="option_row">
+            <div class="option_name">Source:</div>
+            <div class="option_picker">
+                <div>
+                    <input type="checkbox" name="dictionary1" id="dictionary1">
+                    <label for="dictionary1">Dictionary 1</label>
+                </div>
+                <br>
+                <div>
+                    <input type="checkbox" name="dictionary2" id="dictionary2">
+                    <label for="dictionary2">Dictionary 2</label>
+                </div>
             </div>
         </div>
 
@@ -45,8 +62,9 @@
     </div>
 
     <div class="footer"><a id="footer-homepage" href="http://translate.google.com/"></a></div>
-    <div class="footer">&copy; 2017 Vobi - <a id="footer-privacy" href="#">Github</a></div>
+    <div class="footer">&copy; 2017 Vobi - <a id="footer-privacy" target="_blank" href="https://github.com/vobi-io/extension-wordbucket">Github</a></div>
 
+	<script src="../api.js"></script>
 	<script src="options.js"></script>
 </body>
 </html>
