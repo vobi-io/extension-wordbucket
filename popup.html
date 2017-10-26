@@ -5,34 +5,25 @@
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-	
-	<style type="text/css">
-		body {
-			width: 300px;
-			height: 50px;
-		}
-		.wrapper {
-			display: flex!important;
-			justify-content: center;
-			align-items: center;
-			align-content: center;
-			flex-direction: row;
-			width: 100%;
-			padding: 15px;
-		}
-		input {
-			margin-right: 15px;
-		}
-	</style>
+	<link rel="stylesheet" href="./assets/css/popup.css">
+
 </head>
 <body>
 
 	<div class="container-fluid">
 		<div class="row">
 			<form class="wrapper">
-				<input type="text" name="text" class="form-control" id="text" value="go" placeholder="Enter here..." autocomplete="OFF" required>
-				<button type="button" class="btn btn-info" id="translate">Translate</button>
+				<div class="input-group">
+					<input type="text" name="text" class="form-control" id="text" placeholder="Enter here..." autocomplete="OFF" required>
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-secondary" id="translate">Go!</button>
+					</span>
+				</div>
 			</form>
+		</div>
+
+		<div class="alert alert-primary full" id="saveStatus" style="display:none" role="alert">
+			Saved...
 		</div>
 		<div class="row" id="results" style="display: block;">
 			

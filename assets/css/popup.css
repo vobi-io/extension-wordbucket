@@ -1,0 +1,38 @@
+body {
+    width: 300px;
+    height: 50px;
+}
+.wrapper {
+    display: flex!important;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: row;
+    width: 100%;
+    padding: 15px;
+}
+
+#results {
+    padding: 0 15px 15px 15px;
+}
+
+.list-group-item {
+    padding-left: 13px;
+}
+
+.list-group-item button {
+    margin-right: 5px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.full {
+    width: 100%;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;  
+}

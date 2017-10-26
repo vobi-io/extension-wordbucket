@@ -1,58 +1,68 @@
 // self executing function here
-// (function() {
+(function() {
+
+	let fbUsedId = null;
+
+	chrome.storage.sync.get({
+	    fbUsedId: null,
+	  }, function(items) {
+	  	fbUsedId =  items.fbUsedId
+	});
+
 	// your page initialization code here
 	// the DOM will be available here
 	let wordbucketText;
 	function saveText(text, translation) {
-		// clearPopup()
-		// clearButton()
-		console.log("Save text:::", text, translation)
+		console.log("Save text:::", text, translation, fbUsedId)
+
+		var status = document.getElementById('saveStatus');
+        status.textContent = 'Word saved.';
+        status.style.display = "inline-block";
+        setTimeout(function() {
+            status.textContent = '';
+            status.style.display = "none";
+        }, 750);
+	}
+
+	function createListItem(key, value) {
+		var listItem = document.createElement('li')
+		listItem.className = 'list-group-item'
+		
+		var saveBtn = document.createElement('button')
+		saveBtn.className = 'btn btn-sm btn-secondary'
+		saveBtn.innerText = "Save"
+		saveBtn.onclick = function() {
+			saveText(key, value)
+		}
+		listItem.className = 'list-group-item'
+		
+		var textRow = document.createElement('span')
+		textRow.innerHTML = `<span class="bold">${key}</span> - ${value}`
+		
+		listItem.appendChild(saveBtn);
+		listItem.appendChild(textRow);
+		return listItem
 	}
 
 	function renderResults(event, text, translation) {
+		document.getElementById('results').innerHTML = ''
+
 		var wrapperDiv = document.createElement('div')
     	wrapperDiv.className = 'wordbucket-wrapper'
-		wrapperDiv.style.top = `${event.pageY+5}px`
-		wrapperDiv.style.left = `${event.pageX+5}px`
 			
-		var contentDiv = document.createElement('div')
-    	contentDiv.className = 'wordbucket-content'
-
-		var textRow = document.createElement('span')
-    	textRow.className = 'wordbucket-target'
-		textRow.innerText = text
-		contentDiv.appendChild(textRow);
-
-		var hr = document.createElement('div')
-    	hr.className = 'wordbucket-hr'
-		contentDiv.appendChild(hr);
+		var contentDiv = document.createElement('ul')
+		contentDiv.className = 'list-group'
 
 		translation.dictionary1.map(item => {
-			var textRow = document.createElement('span')
-			textRow.innerText = item.value
-			contentDiv.appendChild(textRow);
+			contentDiv.appendChild(createListItem(item.key, item.value));
 		})
-
-		var hr = document.createElement('div')
-    	hr.className = 'wordbucket-hr'
-		contentDiv.appendChild(hr);
-
+		
 		translation.dictionary2.map(item => {
-			var textRow = document.createElement('span')
-			textRow.innerText = `${item.key} - ${item.value}`
-			contentDiv.appendChild(textRow);
+			contentDiv.appendChild(createListItem(item.key, item.value));
 		})
-
-		var saveBtn = document.createElement('button')
-    	saveBtn.className = 'wordbucket-save-button'
-		saveBtn.innerText = "Save"
-		saveBtn.onclick = function() {
-			saveText(text, translation)
-		}
 
 		wrapperDiv.appendChild(contentDiv);
-		wrapperDiv.appendChild(saveBtn);
-		document.getElementsById('results').appendChild(wrapperDiv);
+		document.getElementById('results').appendChild(contentDiv);
 	}
 
 	function translateText(event) {
@@ -65,4 +75,4 @@
 
 	document.getElementById('translate').addEventListener("click", translateText)
 
-// })();
+})();
