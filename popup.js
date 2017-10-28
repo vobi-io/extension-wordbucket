@@ -1,12 +1,15 @@
 // self executing function here
 (function() {
 
+	let suggestionLimit = 3;
 	let fbUsedId = null;
 
 	chrome.storage.sync.get({
 	    fbUsedId: null,
+	    suggestionLimit: 3,
 	  }, function(items) {
 	  	fbUsedId =  items.fbUsedId
+	  	suggestionLimit =  items.suggestionLimit
 	});
 
 	// your page initialization code here
@@ -68,7 +71,7 @@
 
 	function translateText(event) {
 		// alert()
-		translateTextFromAPI(document.getElementById('text').value, (text, translation) => {
+		translateTextFromAPI(document.getElementById('text').value, suggestionLimit, (text, translation) => {
 			renderResults(event, text, translation)
 			// console.log(event, text, translation)
 		})
