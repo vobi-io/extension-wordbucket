@@ -3,15 +3,18 @@
 	// your page initialization code here
 	// the DOM will be available here
 	let wordbucketText;
+	let suggestionLimit;
 	let showInline = false;
 	let fbUsedId = null;
 
 	chrome.storage.sync.get({
 	    inlineEnbaled: true,
 	    fbUsedId: null,
+	    suggestionLimit: 3,
 	  }, function(items) {
 	  	showInline =  items.inlineEnbaled
 	  	fbUsedId =  items.fbUsedId
+	  	suggestionLimit =  items.suggestionLimit
 	});
 
 	function getSelectedText() {
@@ -136,12 +139,16 @@
 	}
 
 	function translateText(event) {
-		translateTextFromAPI(wordbucketText, (text, translation) => {
+		translateTextFromAPI(wordbucketText, suggestionLimit, (text, translation) => {
 			createPopup(event, text, translation)
 		})
 	}
 
 	document.addEventListener("mouseup", showButton)
 	document.addEventListener("mousedown", removeButton)
+
+	// chrome.commands.onCommand.addListener(function(command) {
+	// 	console.log('Command:', command);
+	// });
 
 })();

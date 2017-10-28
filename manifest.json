@@ -16,7 +16,8 @@
     }
   ],
   "background": { 
-    "scripts": ["api.js", "contextMenu.js"]
+    "scripts": ["api.js", "contextMenu.js"],
+    "persistent": true
   },
   "options_ui": {
     "page": "options/options.html",

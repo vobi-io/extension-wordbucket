@@ -29,11 +29,11 @@
 	background-size: 19px;
 	/* border: 1px solid #e7e7e7; */
 	/* cursor: pointer; */
-	padding: 5px;
-    border: .5px dashed #e3e3e3;
+	/* padding: 5px; */
+    /* border: .5px dashed #e3e3e3; */
 
 	background: #fff;
-	border-radius: 2px;
+	/* border-radius: 2px; */
 	/* margin: 1rem; */
 	/* position: relative; */
 	/* width: 300px; */
@@ -61,6 +61,8 @@
 	max-height: 300px;
 	/* border-bottom: 1px solid #f5f5f5; */
 	/* padding-bottom: 5px; */
+	border: 1px solid #eaecef;
+    padding: 3px;
 }
 
 .wordbucket-save-button{
@@ -68,14 +70,14 @@
 	margin-right: 5px;
     border-radius: 2px;
     cursor: pointer;
-    font-size: 11px;
+    font-size: 12px;
     text-align: center;
 	height: 20px;
-	width: 32px;
+	width: 40px;
 	padding: 0;
-	background-color: white;
-    background-image: none;
-    color: #3179ed!important;
+	/* background-color: white; */
+    /* background-image: none; */
+    /* color: #3179ed!important; */
     /* background-color: #4d90fe; */
     /* background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
     background-image: -moz-linear-gradient(top,#4d90fe,#4787ed);
@@ -87,11 +89,15 @@
     -moz-transition: all 0.3s;
     -ms-transition: all 0.3s;
     -o-transition: all 0.3s;
-    transition: all 0.3s;   
+	transition: all 0.3s;   
+	
+	color: #111!important;
+    background-color: #e2e6ea!important;
+    border-color: #dae0e5!important;
 }
 .wordbucket-save-button:hover{
-    color: #fff!important;
-    background-color: #3179ed!important;
+    /* color: #fff!important; */
+    /* background-color: #3179ed!important; */
 }
 	
 .wordbucket-options-button {
@@ -125,7 +131,7 @@
     -ms-transition: all 0.3s;
     -o-transition: all 0.3s;
     transition: all 0.3s;   
-    padding: 2px;
+    padding: 5px;
 }
 .wordbucket-list-item:hover {
     background: rgba(0,0,0,.04);

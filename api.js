@@ -2,9 +2,9 @@ function saveTextToAPI(text) {
 	alert("Saved::" + text)
 }
 
-function translateTextFromAPI(text, callback) {
-	return callback(text, {dictionary1: [{key: text, value:'მაგიდა'}], dictionary2: [{key: text, value:'მაგიდა'},{key: text, value:'მაგიდა'}]})
-    const url = 'https://gigabot.ngrok.io/translate?text='+text
+function translateTextFromAPI(text, suggestionLimit, callback) {
+	// return callback(text, {dictionary1: [{key: text, value:'მაგიდა'}], dictionary2: [{key: text, value:'მაგიდა'},{key: text, value:'მაგიდა'}]})
+    const url = `https://geobot.ge/translate?text=${text}&limit=${suggestionLimit}`
 	httpGetAsync(url, response => {
 		callback(text, JSON.parse(response))
 	})

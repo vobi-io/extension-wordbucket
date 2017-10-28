@@ -5,9 +5,10 @@ var defaultConfig = {
 // Saves options
 function save_options() {
     var inlineEnbaled = document.getElementById('inline').checked;
-
+    var suggestionLimit = document.getElementById('suggestion_limit').options[document.getElementById('suggestion_limit').selectedIndex].value
     store_options({
-        inlineEnbaled: inlineEnbaled
+        inlineEnbaled: inlineEnbaled,
+        suggestionLimit: suggestionLimit,
     })
 }
 
@@ -39,9 +40,12 @@ function store_options(options, callback) {
 function restore_options() {
     // Use default value color = 'red' and inlineEnbaled = true.
     chrome.storage.sync.get({
-        inlineEnbaled: true
+        inlineEnbaled: true,
+        suggestionLimit: 3,
     }, function(items) {
         document.getElementById('inline').checked = items.inlineEnbaled;
+        // document.getElementById('choices').choices.options[2].selected = true;
+        document.getElementById('suggestion_limit').options[items.suggestionLimit-1].selected = true
     });
 }
 

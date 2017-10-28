@@ -15,6 +15,7 @@
 	function saveText(text, translation) {
 		console.log("Save text:::", text, translation, fbUsedId)
 
+		document.getElementById('results').innerHTML = '';
 		var status = document.getElementById('saveStatus');
         status.textContent = 'Word saved.';
         status.style.display = "inline-block";
@@ -29,7 +30,7 @@
 		listItem.className = 'list-group-item'
 		
 		var saveBtn = document.createElement('button')
-		saveBtn.className = 'btn btn-sm btn-secondary'
+		saveBtn.className = 'btn btn-sm btn-light'
 		saveBtn.innerText = "Save"
 		saveBtn.onclick = function() {
 			saveText(key, value)
@@ -73,6 +74,9 @@
 		})
 	}
 
-	document.getElementById('translate').addEventListener("click", translateText)
+	document.getElementById('form').addEventListener('submit', function(event){
+		event.preventDefault();
+		translateText(event)
+	})
 
 })();
