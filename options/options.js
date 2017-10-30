@@ -1,5 +1,6 @@
 var defaultConfig = {
     inlineEnbaled: true,
+    suggestionLimit: 3,
 }
 
 // Saves options
