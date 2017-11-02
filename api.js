@@ -1,10 +1,14 @@
-function saveTextToAPI(text) {
-	alert("Saved::" + text)
+function saveTextToAPI(resourceId, key, value, fbUser) {
+    const url = `https://geobot.ge/save`
+    const data = {resourceId, key, value, fbUser}
+	httpPostAsync(url, data, response => {
+		callback(text, JSON.parse(response))
+	})
 }
 
-function translateTextFromAPI(text, suggestionLimit, callback) {
+function translateTextFromAPI(text, suggestionLimit, userId, callback) {
 	// return callback(text, {dictionary1: [{key: text, value:'მაგიდა'}], dictionary2: [{key: text, value:'მაგიდა'},{key: text, value:'მაგიდა'}]})
-    const url = `https://geobot.ge/translate?text=${text}&limit=${suggestionLimit}`
+    const url = `https://geobot.ge/translate?text=${text}&count=${suggestionLimit}&userId=${userId}`
 	httpGetAsync(url, response => {
 		callback(text, JSON.parse(response))
 	})
@@ -26,4 +30,12 @@ function httpGetAsync(url, callback)
     }
     xmlHttp.open("GET", url, true); // true for asynchronous 
     xmlHttp.send(null);
+}
+
+function httpPostAsync(url, data, callback)
+{
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(data));
 }

@@ -6,14 +6,18 @@
 	let suggestionLimit;
 	let showInline = false;
 	let fbUsedId = null;
+	let user = null;
 
 	chrome.storage.sync.get({
 	    inlineEnbaled: true,
 	    fbUsedId: null,
+	    user: null,
 	    suggestionLimit: 3,
 	  }, function(items) {
 	  	showInline =  items.inlineEnbaled
 	  	fbUsedId =  items.fbUsedId
+	  	user =  items.user
+	  	user =  items.user
 	  	suggestionLimit =  items.suggestionLimit
 	});
 
@@ -87,23 +91,24 @@
 		document.body.appendChild(button);
 	}
 
-	function saveText(text, translation) {
+	function saveText(resourceId, key, value, translation) {
 		clearPopup()
 		clearButton()
 		if(!fbUsedId) {
 			return alert('Please, login into your account.')
 		}
-		console.log("Save text:::", text, translation, fbUsedId)
+
+		saveTextToAPI(resourceId, key, value, {fbUser: fbUsedId, user: user})
 	}
 
-	function createListItem(key, value) {
+	function createListItem(key, value, resourceId) {
 		var listItem = document.createElement('div')
 		
 		var saveBtn = document.createElement('button')
 		saveBtn.className = 'wordbucket-save-button'
 		saveBtn.innerText = "Save"
 		saveBtn.onclick = function() {
-			saveText(key, value)
+			saveText(resourceId, key, value)
 		}
 		listItem.className = 'wordbucket-list-item'
 		
@@ -125,11 +130,11 @@
 		contentDiv.className = 'wordbucket-content'
 
 		translation.dictionary1.map(item => {
-			contentDiv.appendChild(createListItem(item.key, item.value));
+			contentDiv.appendChild(createListItem(item.key, item.value, item.resourceId));
 		})
 		
 		translation.dictionary2.map(item => {
-			contentDiv.appendChild(createListItem(item.key, item.value));
+			contentDiv.appendChild(createListItem(item.key, item.value, item.resourceId));
 		})
 
 		
@@ -139,7 +144,7 @@
 	}
 
 	function translateText(event) {
-		translateTextFromAPI(wordbucketText, suggestionLimit, (text, translation) => {
+		translateTextFromAPI(wordbucketText, suggestionLimit, fbUsedId, (text, translation) => {
 			createPopup(event, text, translation)
 		})
 	}

@@ -3,32 +3,37 @@
 
 	let suggestionLimit = 3;
 	let fbUsedId = null;
+	let user = null;
 
 	chrome.storage.sync.get({
 	    fbUsedId: null,
+	    user: null,
 	    suggestionLimit: 3,
 	  }, function(items) {
 	  	fbUsedId =  items.fbUsedId
+	  	user =  items.user
 	  	suggestionLimit =  items.suggestionLimit
 	});
 
 	// your page initialization code here
 	// the DOM will be available here
 	let wordbucketText;
-	function saveText(text, translation) {
-		console.log("Save text:::", text, translation, fbUsedId)
-
-		document.getElementById('results').innerHTML = '';
-		var status = document.getElementById('saveStatus');
-        status.textContent = 'Word saved.';
-        status.style.display = "inline-block";
-        setTimeout(function() {
-            status.textContent = '';
-            status.style.display = "none";
-        }, 750);
+	function saveText(resourceId, key, value) {
+		// console.log("Save text:::", text, translation, fbUsedId)
+		saveTextToAPI(resourceId, key, value, {fbUser: fbUsedId, user: user}, () => {
+			document.getElementById('results').innerHTML = '';
+			var status = document.getElementById('saveStatus');
+			status.textContent = 'Word saved.';
+			status.style.display = "inline-block";
+			setTimeout(function() {
+				status.textContent = '';
+				status.style.display = "none";
+			}, 750);
+		})
+		
 	}
 
-	function createListItem(key, value) {
+	function createListItem(key, value, resourceId) {
 		var listItem = document.createElement('li')
 		listItem.className = 'list-group-item'
 		
@@ -36,7 +41,7 @@
 		saveBtn.className = 'btn btn-sm btn-light'
 		saveBtn.innerText = "Save"
 		saveBtn.onclick = function() {
-			saveText(key, value)
+			saveText(resourceId, key, value)
 		}
 		listItem.className = 'list-group-item'
 		
@@ -58,11 +63,11 @@
 		contentDiv.className = 'list-group'
 
 		translation.dictionary1.map(item => {
-			contentDiv.appendChild(createListItem(item.key, item.value));
+			contentDiv.appendChild(createListItem(item.key, item.value, item.resourceId));
 		})
 		
 		translation.dictionary2.map(item => {
-			contentDiv.appendChild(createListItem(item.key, item.value));
+			contentDiv.appendChild(createListItem(item.key, item.value, item.resourceId));
 		})
 
 		wrapperDiv.appendChild(contentDiv);
@@ -71,7 +76,7 @@
 
 	function translateText(event) {
 		// alert()
-		translateTextFromAPI(document.getElementById('text').value, suggestionLimit, (text, translation) => {
+		translateTextFromAPI(document.getElementById('text').value, suggestionLimit, fbUsedId, (text, translation) => {
 			renderResults(event, text, translation)
 			// console.log(event, text, translation)
 		})
