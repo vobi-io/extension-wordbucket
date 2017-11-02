@@ -7,7 +7,7 @@ function saveTextToAPI(resourceId, key, value, fbUser, callback) {
 }
 
 function translateTextFromAPI(text, suggestionLimit, userId, callback) {
-	return callback(text, {dictionary1: [{key: text, value:'მაგიდა'}], dictionary2: [{key: text, value:'მაგიდა'},{key: text, value:'მაგიდა'}]})
+	// return callback(text, {dictionary1: [{key: text, value:'მაგიდა'}], dictionary2: [{key: text, value:'მაგიდა'},{key: text, value:'მაგიდა'}]})
     const url = `https://geobot.ge/translate?text=${text}&count=${suggestionLimit}&userId=${userId}`
 	httpGetAsync(url, response => {
 		callback(text, JSON.parse(response))

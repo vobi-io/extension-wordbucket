@@ -139,3 +139,20 @@
 .wordbucket-list-item:not(:last-child) {
     border-bottom: 1px solid #eaecef;
 }
+
+.translations-container {
+	margin: 12px;
+	margin-top: 0;
+	padding: 0;
+}
+.translations {
+	border: 1px solid #e3e3e3;
+	border-bottom: none;
+}
+.translation {
+	border-bottom: 1px solid #e3e3e3;
+	padding: 5px;
+}
+.key {
+	font-weight: bold;
+}

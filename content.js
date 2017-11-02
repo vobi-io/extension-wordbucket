@@ -95,7 +95,8 @@ var app = new Vue({
 		},
   		mouseUp(event) {
   			if(!this.settings.enableInline) return
-     		if (!this.getSelectedText()) return
+  			const text = this.getSelectedText()
+     		if (!text || text == "" || text == " ") return
      		this.text = this.getSelectedText()
 
 			var finder = new Finder({
