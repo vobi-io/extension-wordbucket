@@ -1,78 +1,111 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>WordBucket Options</title>
-    <link rel="stylesheet" href="../assets/css/options.css">
+    <title>Wordbucket Settings</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="../lib/bulma.min.css">
+    <script src="../lib/vue.js"></script>
 </head>
 <body>
-	<div id="content">
-       	<h1>
-        	<img src="../assets/images/logo.png" title="Vobi.io" alt="Vobi.io"><br>
-        	<div id="options-title-heading">Chrome Extension Options</div>
-      	</h1>
-
-      	<div class="option_row">
-        	<div class="option_name">Facebook Account:</div>
-    		<div class="option_picker">
-                 <a target="_blank" id="fbLogin" style="display: none" href="https://www.facebook.com/dialog/oauth?client_id=1764871037166841&response_type=token&scope=email&redirect_uri=http://www.facebook.com/connect/login_success.html">Facebook Connect</a>
-                 <span id="username" style="display: none"></span>
-                 <button id="fbLogout" style="display: none">Logout</button>
-        	</div>
-     	</div>
-        
-        <div class="option_row">
-            <div class="option_name">Suggestion limit:</div>
-            <div class="option_picker">
-                <select id="suggestion_limit" class="jfk-button jfk-button-standard">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="option_row">
-            <div class="option_name">Source:</div>
-            <div class="option_picker">
-                <div>
-                    <input type="checkbox" name="dictionary1" id="dictionary1">
-                    <label for="dictionary1">Dictionary 1</label>
+    
+    <div id="app">
+        <section class="section">
+            <div class="container">
+                <div class="columns is-mobile">
+                    <div class="column is-8 is-offset-2">
+                        <div class="card">
+                            <div class="card-content">
+                                <nav class="level is-mobile">
+                                    <div class="level-item has-text-centered">
+                                        <div>
+                                            <p class="heading">Wordbucket</p>
+                                            <p class="title">Chrome Extension Options</p>
+                                        </div>
+                                    </div>
+                                </nav>
+                                <div class="field is-horizontal">
+                                    <div class="field-label is-normal">
+                                        <label class="label">Facebook Account</label>
+                                    </div>
+                                    <div class="field-body">
+                                        <div class="control">
+                                            <a class="button is-link" target="_blank" v-show="!settings.user.id" href="https://www.facebook.com/dialog/oauth?client_id=1764871037166841&response_type=token&scope=email&redirect_uri=http://www.facebook.com/connect/login_success.html">
+                                                <span class="icon is-small"><i class="material-icons">settings_applications</i></span>
+                                                <span>Login with fb</span>
+                                            </a>
+                                            <button class="button is-text" v-show="settings.user.id">{{name}}</button>
+                                            <button class="button" v-show="settings.user.id" @click="logout">
+                                                <span class="icon is-small"><i class="material-icons">power_settings_new</i></span>
+                                                <span>Log out</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field is-horizontal">
+                                    <div class="field-label is-normal">
+                                        <label class="label">Suggestion Limit</label>
+                                    </div>
+                                    <div class="field-body">
+                                        <div class="control">
+                                            <div class="select">
+                                                <select v-model="settings.suggestionLimit">
+                                                    <option v-for="number in numbers" :value="number">{{number}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field is-horizontal">
+                                    <div class="field-label">
+                                        <label class="label">Enable inline?</label>
+                                    </div>
+                                    <div class="field-body">
+                                        <div class="field is-narrow">
+                                            <div class="control">
+                                                <label class="radio">
+                                                    <input type="radio" name="inline" :value="true" v-model="settings.inlineEnbaled"> Yes
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="inline" :value="false" v-model="settings.inlineEnbaled"> No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field is-horizontal is-grouped">
+                                    <div class="field-label is-normal"></div>
+                                    <div class="field-body">
+                                        <div class="buttons">
+                                            <button class="button is-link" @click="save"><span class="icon is-small"><i class="material-icons">save</i></span><span>Submit</span></button>
+                                            <button class="button is-white" @click="reset"><span class="icon is-small"><i class="material-icons">refresh</i></span><span>Reset</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <br>
-                <div>
-                    <input type="checkbox" name="dictionary2" id="dictionary2">
-                    <label for="dictionary2">Dictionary 2</label>
+                <div class="columns" v-show="showNotification">
+                    <div class="column is-8 is-offset-2">
+                        <article class="message is-success">
+                            <div class="message-header">
+                                <p>Success</p>
+                                <!-- <button class="delete" aria-label="delete"></button> -->
+                            </div>
+                            <div class="message-body">
+                                Setting updated...
+                            </div>
+                        </article>
+                    </div>
                 </div>
             </div>
-        </div>
 
-      	<div class="option_row">
-        	<div id="popup-option" class="option_name">Enable Inline:</div>
-	        <div id="popup-option-content" class="option_picker">
-	          	<input type="checkbox" name="inline" id="inline">
-	          	<label for="inline">Show inline save button on selection</label>
-		    </div>
-     	 </div>
-
-      	<div class="buttons">
-			<div id="saveBtn" class="jfk-button-action jfk-button" role="button" tabindex="0" style="user-select: none;">Save</div>
-			<div id="resetBtn" class="jfk-button-standard jfk-button" role="button" tabindex="0" style="user-select: none;">Reset</div>
-			<span id="saveStatus" style="display:none">Options saved.</span>
-      	</div>
-
+        </section>
     </div>
-
-    <div class="footer"><a id="footer-homepage" href="http://translate.google.com/"></a></div>
-    <div class="footer">&copy; 2017 Vobi - <a id="footer-privacy" target="_blank" href="https://github.com/vobi-io/extension-wordbucket">Github</a></div>
-
-	<script src="../api.js"></script>
-	<script src="options.js"></script>
+    
+    <script src="./options.js"></script>
 </body>
 </html>

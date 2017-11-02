@@ -1,125 +1,107 @@
-var defaultConfig = {
-    inlineEnbaled: true,
-    suggestionLimit: 3,
-}
-
-// Saves options
-function save_options() {
-    var inlineEnbaled = document.getElementById('inline').checked;
-    var suggestionLimit = document.getElementById('suggestion_limit').options[document.getElementById('suggestion_limit').selectedIndex].value
-    store_options({
-        inlineEnbaled: inlineEnbaled,
-        suggestionLimit: suggestionLimit,
-    })
-}
-
-// Saves options to chrome.storage
-function reset_options() {
-    store_options(defaultConfig, function() {
-        restore_options()
-    })
-}
-
-// Saves options to chrome.storage
-function store_options(options, callback) {
-    chrome.storage.sync.set(options, function() {
-        // Update status to let user know options were saved.
-        var status = document.getElementById('saveStatus');
-        status.textContent = 'Options saved.';
-        status.style.display = "inline-block";
-        setTimeout(function() {
-            status.textContent = '';
-            status.style.display = "none";
-        }, 750);
-
-        if (callback) callback()
-    });
-}
-
-// Restores select box and checkbox state using the preferences
-// stored in chrome.storage.
-function restore_options() {
-    // Use default value color = 'red' and inlineEnbaled = true.
-    chrome.storage.sync.get({
-        inlineEnbaled: true,
-        suggestionLimit: 3,
-    }, function(items) {
-        document.getElementById('inline').checked = items.inlineEnbaled;
-        // document.getElementById('choices').choices.options[2].selected = true;
-        document.getElementById('suggestion_limit').options[items.suggestionLimit-1].selected = true
-    });
-}
-
-// facebook logout
-function fbLogout() {
-    localStorage.clear();
-    chrome.storage.sync.remove(["fbUsedId","user"],function(){
-        const error = chrome.runtime.lastError;
-        if (error) {
-            console.error(error);
+var app = new Vue({
+    el: '#app',
+    data: {
+        default: {
+            suggestionLimit: 3,
+            inlineEnbaled: true,
+            user: {
+                id: null,
+                first_name: null,
+                last_name: null,
+            }
+        },
+        settings: {
+            // suggestionLimit: 2,
+            // inlineEnbaled: true,
+        },
+        showNotification: false,
+        successURL: 'https://www.facebook.com/connect/login_success.html'
+    },
+    computed: {
+        numbers() {
+            const numbers = []
+            for (var i = 1; i < 10; i++) {
+                numbers.push(i)
+            }
+            return numbers
+        },
+        name() {
+            return this.settings.user.first_name +' '+this.settings.user.last_name
         }
-
-        renderLoginLogout()
-    })
-}
-
-// Show/Hide user login
-function renderLoginLogout() {
-    // Check auth user
-    chrome.storage.sync.get({
-        "fbUsedId": null,
-        "user": null,
-    }, function(items){
-        let user = 'none'
-        let logout = 'block'
-        if (items.fbUsedId) {
-            user = 'block'
-            logout = 'none'
-            document.getElementById('username').innerText = items.user
-        }
-        document.getElementById('username').style.display = user
-        document.getElementById('fbLogout').style.display = user
-        document.getElementById('fbLogin').style.display = logout
-    });
-}
-
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('saveBtn').addEventListener('click', save_options);
-document.getElementById('resetBtn').addEventListener('click', reset_options);
-document.getElementById('fbLogout').addEventListener('click', fbLogout);
-
-
-(function() {
-    // your page initialization code here
-    // the DOM will be available here
-    var successURL = 'https://www.facebook.com/connect/login_success.html';
-    function onFacebookLogin() {
-        if (!localStorage.accessToken) {
-            chrome.tabs.getAllInWindow(null, function(tabs) {
-                for (var i = 0; i < tabs.length; i++) {
-                    if (tabs[i].url.indexOf(successURL) == 0) {
-                        var params = tabs[i].url.split('#')[1];
-                        access = params.split('&')[0].split('=')[1]
-                        localStorage.accessToken = access;
-                        chrome.tabs.onUpdated.removeListener(onFacebookLogin);
-                        getFBUserId(access, response => {
-                            chrome.storage.sync.set({
-                                "fbUsedId": response.id,
-                                "user": response.name,
-                            }, function(){
-                                renderLoginLogout()
-                            });
-                        })
-                        return;
-                    }
-                }
+    },
+    methods: {
+        save() {
+            this.storeOptions()
+        },
+        reset() {
+            const user = this.settings.user
+            this.settings = Object.assign({}, {}, this.default)
+            this.settings.user = user
+            this.storeOptions()
+        },
+        storeOptions() {
+            chrome.storage.sync.set(this.settings, () => {
+                this.showNotification = true
+                setTimeout(() => { this.showNotification = false }, 1000);
             });
+        },
+        getOptions(callback) {
+            chrome.storage.sync.get(this.default, (settings) => {
+                callback(settings)
+            });
+        },
+        // login() {
+        //     this.settings.user = {
+        //         id: 123,
+        //         first_name: 'shalva',
+        //         last_name: 'gegia',
+        //     }
+        //     this.storeOptions()
+        // },
+        logout() {
+            localStorage.clear();
+            localStorage.accessToken = '';
+            this.settings.user = {}
+            this.storeOptions()
+        },
+        httpGetAsync(url, callback) {
+            const xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() { 
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    callback(xmlHttp.responseText);
+            }
+            xmlHttp.open("GET", url, true); // true for asynchronous 
+            xmlHttp.send(null);
+        },
+        getFBUserId(accessToken, callback){
+            const url = 'https://graph.facebook.com/me?fields=id,name,first_name,last_name,email&access_token='+accessToken
+            this.httpGetAsync(url, response => {
+                callback(JSON.parse(response))
+            })
+        },
+        onFbLogin() {
+            if (!localStorage.accessToken) {
+                const self = this
+                chrome.tabs.getAllInWindow(null, function(tabs) {
+                    for (var i = 0; i < tabs.length; i++) {
+                        if (tabs[i].url.indexOf(app.successURL) == 0) {
+                            var params = tabs[i].url.split('#')[1];
+                            access = params.split('&')[0].split('=')[1]
+                            localStorage.accessToken = access;
+                            chrome.tabs.onUpdated.removeListener(self.onFbLogin);
+                            self.getFBUserId(access, response => {
+                                self.settings.user = response
+                                self.storeOptions()
+                            })
+                            return;
+                        }
+                    }
+                });
+            }
         }
+    },
+    created() {
+        chrome.tabs.onUpdated.addListener(this.onFbLogin);
+        this.getOptions(settings => this.settings = settings)
     }
-    // Set listener
-    chrome.tabs.onUpdated.addListener(onFacebookLogin);
-
-    // Check login/logout buttons
-    renderLoginLogout()
-    
- })();
+})

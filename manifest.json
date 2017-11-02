@@ -3,6 +3,7 @@
   "name": "Wordbucket",
   "description": "Wordbucket chrome extension",
   "version": "1.2",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "permissions": [
     "contextMenus",
     "storage",
@@ -17,7 +18,7 @@
   ],
   "background": { 
     "scripts": ["api.js", "contextMenu.js"],
-    "persistent": true
+    "persistent": false
   },
   "options_ui": {
     "page": "options/options.html",
@@ -30,7 +31,7 @@
     "128": "icons/128.png"
   },
   "browser_action": {
-    "default_title": "This is a test",
-    "default_popup": "popup.html"
+    "default_title": "Wordbucket",
+    "default_popup": "popup/popup.html"
   }
 }

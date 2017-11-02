@@ -1,8 +1,8 @@
-function saveTextToAPI(resourceId, key, value, fbUser) {
+function saveTextToAPI(resourceId, key, value, fbUser, callback) {
     const url = `https://geobot.ge/save`
     const data = {resourceId, key, value, fbUser}
 	httpPostAsync(url, data, response => {
-		callback(text, JSON.parse(response))
+		callback(JSON.parse(response))
 	})
 }
 
@@ -38,4 +38,8 @@ function httpPostAsync(url, data, callback)
     xhr.open("POST", url, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(data));
+    xhr.onreadystatechange = function() { 
+        if (xhr.readyState == 4 && xhr.status == 200)
+            callback(xhr.responseText);
+    }
 }

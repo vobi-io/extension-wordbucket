@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wordbucket Settings</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="../lib/bulma.min.css">
+    <script src="../lib/vue.js"></script>
+	<style type="text/css">
+		.translations-container {
+			margin: 12px;
+			margin-top: 0;
+			padding: 0;
+		}
+		.translations {
+			border: 1px solid #e3e3e3;
+			border-bottom: none;
+		}
+		.translation {
+			border-bottom: 1px solid #e3e3e3;
+    		padding: 5px;
+		}
+		.key {
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<section class="column">
+			<div class="columns is-mobile">
+				<div class="column">
+					<form v-on:submit.prevent="translate">
+						<div class="field has-addons">
+							<div class="control is-expanded">
+								<input class="input" type="text" v-model="text" placeholder="Enter here..." required="">
+							</div>
+						    <div class="control">
+						        <button type="submit" class="button is-primary">GO!</button>
+						    </div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="columns is-mobile" v-if="saved">
+				<div class="column">
+					<div class="notification is-success">
+						<button class="delete" @click="saved=false"></button>
+						Saved successfully...
+					</div>
+				</div>
+			</div>
+			<div class="columns is-mobile" v-if="translations">
+				<div class="column translations-container">
+					<ul class="translations">
+						<li class="translation" v-for="translation in translations.dictionary1">
+							<button type="button" class="button is-small" @click="save(translation)">Save</button>
+							<span class="key">{{translation.key}}</span> -
+							<span class="value">{{translation.value}}</span>
+						</li>
+						<li class="translation" v-for="translation in translations.dictionary2">
+							<button type="button" :class="{ 'is-loading': translation.isLoading }" class="button is-small" @click="save(translation)">Save</button>
+							<span class="key">{{translation.key}}</span> -
+							<span class="value">{{translation.value}}</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+	</div>
+	
+	<script src="../api.js"></script>
+	<script src="./popup.js"></script>
+</body>
+</html>
