@@ -45,7 +45,7 @@ var app = new Vue({
 	data: {
 		default: {
 			suggestionLimit: 3,
-   			enableInline: true,
+   			inlineEnbaled: true,
    			user: {
    				id: null,
    				first_name: null,
@@ -59,6 +59,7 @@ var app = new Vue({
   	methods: {
   		getSettings() {
 			chrome.storage.sync.get(this.default, (settings) => {
+                console.log( settings )
                 this.settings = settings
             });
   		},
@@ -94,7 +95,7 @@ var app = new Vue({
 		    return text
 		},
   		mouseUp(event) {
-  			if(!this.settings.enableInline) return
+  			if(!this.settings.inlineEnbaled) return
   			const text = this.getSelectedText()
      		if (!text || text == "" || text == " ") return
      		this.text = this.getSelectedText()

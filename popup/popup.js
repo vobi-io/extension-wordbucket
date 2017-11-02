@@ -3,7 +3,7 @@ var app = new Vue({
 	data: {
 		default: {
 			suggestionLimit: 3,
-   			enableInline: true,
+   			inlineEnbaled: true,
    			user: {
    				id: null,
    				first_name: null,
