@@ -1,10 +1,11 @@
 ## Wordbucket Chrome Extension
 
-Wordbucket Chrome Extension
+Wordbucket is easy-to-use inline translation for English to Georgian language, which helps you to translate/learn unknown word for you.
 
-[Download](https://github.com/vobi-io/extension-wordbucket/releases/)
+You can download built extension from link below and drag and drop to Google Chrome to install it.
 
-Wordbucket is easy-to-use inline translation for English to Georgian language, which helps you to translate/learn unknown word for you
+[Download Wordbucket Chrome Extension](https://github.com/vobi-io/extension-wordbucket/releases/)
+
 
 ## Screenshot
 
@@ -13,7 +14,7 @@ Wordbucket is easy-to-use inline translation for English to Georgian language, w
 
 ### Development
 
-clone this repo and install dependecies by runnin
+clone this repo and install dependecies by running
 
 ```
 npm i
