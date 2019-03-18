@@ -10,3 +10,6 @@ yarn.lock
 
 # Backpack build
 build
+
+.pem
+.crx
