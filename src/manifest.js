@@ -7,18 +7,10 @@ module.exports = {
   manifest_version: 2,
   icons: { '16': 'icons/16.png', '128': 'icons/128.png' },
   permissions: [
-    '<all_urls>',
-    '*://*/*',
     'activeTab',
     'tabs',
-    'cookies',
     'background',
-    'contextMenus',
-    'unlimitedStorage',
     'storage',
-    'notifications',
-    'identity',
-    'identity.email',
     'http://*/',
     'https://*/'
   ],
