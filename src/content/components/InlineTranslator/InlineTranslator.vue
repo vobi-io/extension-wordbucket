@@ -31,6 +31,7 @@
         const text = getSelectedText() || ''
         if (isEmpty(text)) return
         if (!text.trim().length) return
+        if (!text.trim().match(/[a-z]/i)) return
 
         this.text = text
 
