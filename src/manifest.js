@@ -1,7 +1,7 @@
 
 module.exports = {
   name: 'Wordbucket',
-  version: '2.0.0',
+  version: '2.0.3',
   description: 'Wordbucket Chrome Extension',
   author: 'shalva.gegia@gmail.com',
   manifest_version: 2,
